@@ -3,6 +3,8 @@ import './App.css';
 import axios from 'axios';
 
 const URL = 'https://tie.digitraffic.fi/api/v1/data/camera-data';
+const camera = 'C12527'
+
 function App() {
   
   const [error, setError] = useState(null);
@@ -11,13 +13,14 @@ function App() {
   
   useEffect(() => {
     
-    const address = URL
+    const address = URL + '/' + camera;
+    
     
     axios.get(address)
       .then((response) => { 
         setError(null);
         setIsLoaded(true);
-        setItems(response.data.cameraStations[565].cameraPresets)
+        setItems(response.data.cameraStations[0].cameraPresets)
       }).catch(error => {
         console.log(error)
         alert("Joku vika jossakin.")
@@ -39,6 +42,7 @@ function App() {
         <div key={item.id}>
           <h3>{item.id} {item.presentationName}</h3>
           <img src={item.imageUrl} alt=''></img>
+          <p>Aika: {item.measuredTime.replace('T', ' ').substr(0,16)}</p>
         </div>
       ))}
     </div>
